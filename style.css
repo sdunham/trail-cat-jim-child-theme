@@ -1,0 +1,28 @@
+/*
+ Theme Name:   Trail Cat Jim
+ Theme URI:    http://trailcatjim.com/
+ Description:  Theme for Trail Cat Jim website, child of 15Zine theme
+ Author:       Scott Dunham
+ Template:     15zine
+*/
+
+div .postArchiveSelect{
+	width: 100%;
+}
+
+div .select2-container{
+	z-index: 100;
+}
+
+.postArchiveSelectContain{
+	margin-right: 10px;
+}
+
+.postArchiveSelectContain label{
+	display: block;
+}
+
+#postArchivePostsContain{
+	margin-top: 20px;
+	min-height: 120px;
+}
