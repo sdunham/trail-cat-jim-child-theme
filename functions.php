@@ -92,3 +92,28 @@ function get_archive_posts(){
 function get_archive_default_text(){
 	return 'Please select a year and month to view posts';
 }
+
+// Builts an array of child categories which aren't a parent of another category
+// This array is used to output a list of these categories on the front end
+function build_custom_category_list(){
+	// Get array of parent category ids
+	$parents = get_category_parent_ids();
+
+	// Get array of category objects, excluding any which were in the parent id array
+	$categories = get_categories(['exclude' => $parents]);
+
+	// Pass categories to partial to be rendered
+	set_query_var( 'list_categories', $categories );
+	get_template_part( 'partials/categoryList', 'singleLine' );
+
+}
+
+// Gets an array of cayegory ids which are the parent of another category
+function get_category_parent_ids(){
+	global $wpdb;
+	$parents = $wpdb->get_col(
+		"SELECT parent FROM wp_term_taxonomy WHERE taxonomy = 'category' GROUP BY parent"
+	);
+
+	return $parents;
+}
