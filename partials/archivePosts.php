@@ -19,7 +19,7 @@ if( count( $archive_posts ) ){
         $cb_feature_tile_size = 'cb-s';
         ?>
 
-        <div class="cb-grid-feature cb-meta-style-2 cb-feature-<?php echo esc_attr( $i ) . ' ' . esc_attr( $cb_feature_tile_size ); ?>">
+        <div class="cb-grid-feature cb-meta-style-2 cb-feature-2 <?php echo esc_attr( $cb_feature_tile_size ); ?>">
 
             <div class="cb-grid-img">
                 <?php cb_thumbnail( $cb_feature_width, $cb_feature_height, $cb_post_id ); ?>
