@@ -8,11 +8,19 @@ if( count( $list_categories ) > 0 ){
 		?>
 
 		<p>
-			<strong><?php echo $category->name ?></strong> &mdash; 
+			<strong>
+				<a href="<?php echo get_term_link( $category ); ?>">
+					<?php echo $category->name ?>
+				</a>
+			</strong> &mdash; 
 			<em>
 				<?php
 				$separator = '&nbsp;|&nbsp;';
-				$parentsMarkup = get_category_parents( $category->term_id, true, $separator );
+				$parentsMarkup = get_term_parents_list( $category->term_id, 'category', [
+					'separator' => $separator,
+					'inclusive' => false
+				] );
+				
 				$trimmedParentsMarkup = preg_replace('/'.preg_quote( $separator ).'$/', '', $parentsMarkup);
 				echo $trimmedParentsMarkup;
 				?>

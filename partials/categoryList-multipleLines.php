@@ -7,7 +7,11 @@ if( count( $list_categories ) > 0 ){
 	foreach($list_categories as $category){
 		?>
 		
-		<h4><?php echo $category->name ?></h4>
+		<h4>
+			<a href="<?php echo get_term_link( $category ); ?>">
+				<?php echo $category->name ?>
+			</a>
+		</h4>
 		<?php if( $category->description ): ?>
 			<p>
 				<em>
@@ -19,7 +23,11 @@ if( count( $list_categories ) > 0 ){
 			<strong>
 				<?php
 				$separator = '&nbsp;|&nbsp;';
-				$parentsMarkup = get_category_parents( $category->term_id, true, $separator );
+				$parentsMarkup = get_term_parents_list( $category->term_id, 'category', [
+					'separator' => $separator,
+					'inclusive' => false
+				] );
+				
 				$trimmedParentsMarkup = preg_replace('/'.preg_quote( $separator ).'$/', '', $parentsMarkup);
 				echo $trimmedParentsMarkup;
 				?>

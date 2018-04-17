@@ -95,15 +95,37 @@ function get_archive_default_text(){
 
 // Builts an array of child categories which aren't a parent of another category
 // This array is used to output a list of these categories on the front end
-function build_custom_category_list(){
-	// Get array of parent category ids
+function build_custom_category_list($child_of = 0){
 	$parents = get_category_parent_ids();
+	
+	// Array of arguments used when querying for categories to display
+	// Only include categories without children, and include categories
+	// which don't have posts
+	$cat_args = [
+		'taxonomy' => 'category',
+		'hide_empty' => 0,
+		'child_of' => intval( $child_of ),
+		'orderby' => 'name'
+	];
 
-	// Get array of category objects, excluding any which were in the parent id array
-	$categories = get_categories(['exclude' => $parents]);
+	// Query for matching categories
+	$query = new WP_Term_Query( $cat_args );
+	$categories = $query->get_terms();
+
+	// Filter the results to those who aren't a parent
+	// TODO: Using the arg of "childless" in conjunction with "child_of" results in an
+	// empty array, so this is my workaround
+	$childless_categories = array_filter( $categories, function( $cat ) use( $parents ){
+		return !in_array( $cat->term_id, $parents );
+	} );
+
+	// Sort the array, since they are currently sorted based on their hierarchy
+	usort( $childless_categories, function($a, $b){
+		return strcmp( $a->name, $b->name );
+	} );
 
 	// Pass categories to partial to be rendered
-	set_query_var( 'list_categories', $categories );
+	set_query_var( 'list_categories', $childless_categories );
 	get_template_part( 'partials/categoryList', 'singleLine' );
 
 }

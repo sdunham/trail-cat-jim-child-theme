@@ -46,7 +46,11 @@
 							<section class="cb-entry-content clearfix" itemprop="articleBody">
 								<?php the_content(); ?>
 
-								<?php build_custom_category_list(); ?>
+								<?php
+									// Get the parent id category and build a list of categories based on it
+									$parent_category_id = get_post_meta( $cb_page_id, 'tcj_parent_category', true );
+									build_custom_category_list( $parent_category_id );
+								?>
 					     	</section> <!-- end article section -->
 
 							<footer class="article-footer">
