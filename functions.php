@@ -60,23 +60,28 @@ function post_months_ajax_response(){
 
 	if( $year ){
 		$months = get_published_post_months_by_year( $year );
+		$posts_markup = get_archive_posts( true );
 	}
 
-	wp_send_json( $months );
+	wp_send_json( ['months' => $months, 'postsMarkup' => $posts_markup] );
 }
 
 // AJAX response for returning a list of months to the front end based on a given year
 add_action( 'wp_ajax_get_archive_posts', 'get_archive_posts' );
 add_action( 'wp_ajax_nopriv_get_archive_posts', 'get_archive_posts' );
-function get_archive_posts(){
+function get_archive_posts($return = false){
 	$year = filter_input( INPUT_POST, 'year', FILTER_VALIDATE_INT );
 	$month = filter_input( INPUT_POST, 'month', FILTER_VALIDATE_INT );
+
+	$query = ['year' => $year];
+
+	if( $month ){
+		$query['month'] = $month;
+	}
+
 	$posts = get_posts([
 		'posts_per_page' => -1,
-		'date_query' => [
-			'year' => $year,
-			'month' => $month
-		]
+		'date_query' => $query
 	]);
 
 	set_query_var( 'archive_posts', $posts );
@@ -86,11 +91,15 @@ function get_archive_posts(){
 	$posts_markup = ob_get_contents();
 	ob_end_clean();
 
+	if( $return ){
+		return $posts_markup;
+	}
+
 	wp_send_json( $posts_markup );
 }
 
 function get_archive_default_text(){
-	return 'Please select a year and month to view posts';
+	return 'Please select a year and (optional) month to view posts';
 }
 
 // Builts an array of child categories which aren't a parent of another category

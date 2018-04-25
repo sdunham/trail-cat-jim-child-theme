@@ -12,6 +12,12 @@
 			// Clear month select options
 			$('select#postMonthSelect option').remove();
 
+			// If there isn't an actual value selected, clear the posts and return
+			if(!year){
+				updatePostArchiveMarkup('<em>'+scriptParams.archiveDefaultText+'</em>');
+				return;
+			}
+
 			// Remove previous posts markup
 			updatePostArchiveMarkup('');
 
@@ -24,8 +30,9 @@
 					year: year
 				}
 			})
-			.done(function( months ) {
-				addOptionsToMonthSelect(months);
+			.done(function( res ) {
+				addOptionsToMonthSelect(res.months);
+				updatePostArchiveMarkup( res.postsMarkup );
 			});
 		});
 
