@@ -135,6 +135,7 @@ function build_custom_category_list($child_of = 0){
 
 	// Pass categories to partial to be rendered
 	set_query_var( 'list_categories', $childless_categories );
+	set_query_var( 'child_of', $child_of );
 	get_template_part( 'partials/categoryList', 'singleLine' );
 
 }
