@@ -21,6 +21,9 @@
 			// Remove previous posts markup
 			updatePostArchiveMarkup('');
 
+			// Show loading animation
+			$('#postArchiveLoading').removeClass('cb-hidden');
+
 			// Update month select options
 			$.ajax({
 				method: "POST",
@@ -31,6 +34,9 @@
 				}
 			})
 			.done(function( res ) {
+				// Hide loading animation
+				$('#postArchiveLoading').addClass('cb-hidden');
+
 				addOptionsToMonthSelect(res.months);
 				updatePostArchiveMarkup( res.postsMarkup );
 			});
@@ -47,8 +53,14 @@
 				return;
 			}
 
+			// Remove previous posts markup
+			updatePostArchiveMarkup('');
+
 			// Get the selected year
 			var year = $('select#postYearSelect').val();
+
+			// Show loading animation
+			$('#postArchiveLoading').removeClass('cb-hidden');
 
 			// Get posts from the selected year and month, and display them on the page
 			$.ajax({
@@ -61,6 +73,9 @@
 				}
 			})
 			.done(function( postsMarkup ) {
+				// Hide loading animation
+				$('#postArchiveLoading').addClass('cb-hidden');
+
 				updatePostArchiveMarkup( postsMarkup );
 			});
 

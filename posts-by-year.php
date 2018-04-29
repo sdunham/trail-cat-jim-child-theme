@@ -57,6 +57,10 @@
 									<select style="width: 100%" name="postMonth" id="postMonthSelect" class="select2 postArchiveSelect"></select>
 								</div>
 
+								<section id="postArchiveLoading" class="cb-hidden cb-col-12">
+									<div class="lds-dual-ring"></div>
+								</section>
+
 								<section class="cb-col-12" id="postArchivePostsContain">
 									<em><?php echo get_archive_default_text(); ?></em>
 								</section>
