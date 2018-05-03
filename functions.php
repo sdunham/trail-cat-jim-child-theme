@@ -149,3 +149,15 @@ function get_category_parent_ids(){
 
 	return $parents;
 }
+
+function tcj_register_archive_sidebar() {
+    register_sidebar( array(
+        'name' => __( 'Archive Sidebar', 'tcjtheme' ),
+        'id' => 'tcj-archive-sidebar',
+        'before_widget' => '<div id="%1$s" class="cb-sidebar-widget %2$s">',
+		'after_widget' => '</div>',
+		'before_title' => '<h3 class="cb-sidebar-widget-title cb-widget-title">',
+		'after_title' => '</h3>'
+    ) );
+}
+add_action( 'widgets_init', 'tcj_register_archive_sidebar' );
