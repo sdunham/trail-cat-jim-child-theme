@@ -153,9 +153,9 @@ function get_category_parent_ids(){
 // Register a custom sidebar to be used on archive templates
 function tcj_register_archive_sidebar() {
     register_sidebar( array(
-        'name' => __( 'Archive Sidebar', 'tcjtheme' ),
-        'id' => 'tcj-archive-sidebar',
-        'before_widget' => '<div id="%1$s" class="cb-sidebar-widget %2$s">',
+		'name' => __( 'Archive Sidebar', 'tcjtheme' ),
+		'id' => 'tcj-archive-sidebar',
+		'before_widget' => '<div id="%1$s" class="cb-sidebar-widget %2$s">',
 		'after_widget' => '</div>',
 		'before_title' => '<h3 class="cb-sidebar-widget-title cb-widget-title">',
 		'after_title' => '</h3>'
@@ -166,4 +166,74 @@ add_action( 'widgets_init', 'tcj_register_archive_sidebar' );
 // Override parent theme cb_clean_excerpt function to never return an excerpt
 function cb_clean_excerpt ($cb_characters, $cb_read_more = NULL) {
     return '';
+}
+
+// Override parent theme cb_get_post_meta function so we can tack on tags with the categories
+// If the parent theme used filters, this would have been waaaaay easier...
+function cb_get_post_meta( $cb_post_id, $cb_override = NULL ) {
+
+	$cb_comments = $cb_views = $cb_cat_output = $cb_readtime_output = $cb_readtime_output = $cb_lks_output = NULL;
+	$cb_meta_onoff = ot_get_option('cb_meta_onoff', 'on');
+
+	if ( $cb_meta_onoff == 'off' ) {
+		return;
+	}
+
+	$cb_post_meta_category = ot_get_option('cb_byline_category', 'on');
+	$cb_post_meta_views = ot_get_option('cb_byline_postviews', 'on');
+	$cb_post_meta_comments = ot_get_option('cb_byline_comments', 'on');
+	$cb_disqus_code = ot_get_option( 'cb_disqus_shortname', NULL );
+
+	if ( $cb_post_meta_category != 'off' ) {
+
+		$cb_cats = get_the_category($cb_post_id);
+
+		if ( isset( $cb_cats ) && is_array( $cb_cats ) ) {
+			foreach( $cb_cats as $cb_cat => $cb_val ) {
+				$cb_cat_output .= '<span class="cb-category cb-element"><a href="' .  esc_url( get_category_link( $cb_val->term_id ) ) . '" title="' . esc_attr( sprintf( __( "View all posts in %s", "cubell" ), $cb_val->name ) ) . '">' . $cb_val->cat_name . '</a></span>';
+			}
+		}
+
+		// Add tags to the end of the category list
+		$tcj_tags = get_the_terms( $cb_post_id, 'post_tag' );
+
+		if ( isset( $tcj_tags ) && is_array( $tcj_tags ) ) {
+			foreach( $tcj_tags as $cb_tag => $cb_val ) {
+				$cb_cat_output .= '<span class="cb-category cb-element"><a href="' .  esc_url( get_term_link( $cb_val ) ) . '" title="' . esc_attr( sprintf( __( "View all posts in %s", "cubell" ), $cb_val->name ) ) . '">' . $cb_val->name . '</a></span>';
+			}
+		}
+	}
+
+	if ( $cb_post_meta_comments != 'off' ) {
+		if ( $cb_disqus_code == NULL ) {
+			$cb_comments = '<span class="cb-comments cb-element"><a href="' . get_comments_link( $cb_post_id ) . '">' . get_comments_number_text( __( '0 Comments', 'cubell') ) . '</a></span>';
+		} else {
+			$cb_comments = '<span class="cb-comments cb-element"><a href="' . get_permalink( $cb_post_id ) . '#disqus_thread"></a></span>';
+		}
+	}
+
+
+	if ( $cb_post_meta_views != 'off' ) {
+		$cb_view_count = cb_get_post_viewcount( $cb_post_id );
+		if ($cb_view_count != NULL ) {
+			$cb_views = '<span class="cb-views cb-element">' . $cb_view_count . '</span>';
+		}
+
+	}
+
+
+
+	if ( ot_get_option('cb_byline_lks', 'on') != 'off' ) {
+		$cb_lks = cb_get_lks( $cb_post_id );
+		$cb_lks_output =  apply_filters( 'cb_byline_lks', '<span class="cb-lks cb-element">' . $cb_lks . '</span>', $cb_lks );
+	}
+
+	if ( ot_get_option('cb_byline_readtime', 'off') != 'off' ) {
+		$cb_readtime_output =  '<span class="cb-read-time cb-element"><a href="' . esc_url( get_permalink() ) . '">' . cb_reading_time() . '</a></span>';
+	}
+
+	if ( ( $cb_meta_onoff == 'on' ) || ( $cb_override == true ) ) {
+		return '<div class="cb-post-meta">' . $cb_cat_output . $cb_comments . $cb_views . $cb_lks_output . $cb_readtime_output . '</div>';
+	}
+
 }
