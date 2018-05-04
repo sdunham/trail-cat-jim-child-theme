@@ -150,6 +150,7 @@ function get_category_parent_ids(){
 	return $parents;
 }
 
+// Register a custom sidebar to be used on archive templates
 function tcj_register_archive_sidebar() {
     register_sidebar( array(
         'name' => __( 'Archive Sidebar', 'tcjtheme' ),
@@ -161,3 +162,8 @@ function tcj_register_archive_sidebar() {
     ) );
 }
 add_action( 'widgets_init', 'tcj_register_archive_sidebar' );
+
+// Override parent theme cb_clean_excerpt function to never return an excerpt
+function cb_clean_excerpt ($cb_characters, $cb_read_more = NULL) {
+    return '';
+}
