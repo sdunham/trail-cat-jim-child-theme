@@ -1,4 +1,10 @@
 <?php
+
+if( is_admin() ){
+	require_once get_stylesheet_directory() . '/classes/PostListingPage.php';
+	$post_listing_page = new PostListingPage();
+}
+
 // Enqueue the parsent theme styles, and child theme scripts/styles
 add_action( 'wp_enqueue_scripts', 'my_theme_enqueue_styles' );
 function my_theme_enqueue_styles() {

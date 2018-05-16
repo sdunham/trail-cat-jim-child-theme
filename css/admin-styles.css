@@ -1,0 +1,7 @@
+#post-list-contain table td{
+	vertical-align: top;
+}
+
+#post-list-contain table tbody tr:nth-child(odd) {
+   background-color: #ccc;
+}
