@@ -31,6 +31,18 @@ div .select2-container{
 	margin-top: 32px;
 }
 
+.cb-meta .cb-byline {
+	margin-bottom: 0px;
+}
+.cb-module-block .cb-excerpt:empty {
+	display: none;
+}
+.cb-meta .cb-excerpt + .cb-post-meta {
+	margin-top: 0px;
+}
+
+
+
 /* LOADER */
 .lds-dual-ring {
 	display: inline-block;
