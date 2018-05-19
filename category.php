@@ -86,6 +86,12 @@
         <div class="cb-module-header cb-category-header">
             <?php the_archive_title( '<h1 class="cb-module-title">', '</h1>' ); ?>
             <?php the_archive_description(); ?>
+            <?php
+                // Added to original template: Output a list of subcategories for the current category
+                $children = get_terms( 'category', [ 'parent' => $cb_cat_id ] );
+                set_query_var( 'categories', $children );
+                get_template_part( 'partials/categoryList', 'simple' );
+            ?>
         </div>
 
         <?php include( locate_template( 'blog-style-' . $cb_blog_style . '.php' ) ); ?>
