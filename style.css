@@ -56,6 +56,10 @@ div .select2-container{
 	}
 }
 
+/* Sidebar Style Tweaks */
+.cb-sidebar-widget.cb-widget-latest-articles .cb-module-block .cb-article-small .cb-post-title {
+	font-size: 11px;
+}
 
 /* LOADER */
 .lds-dual-ring {
