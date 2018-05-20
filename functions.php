@@ -243,3 +243,21 @@ function cb_get_post_meta( $cb_post_id, $cb_override = NULL ) {
 	}
 
 }
+
+// Filter default 15zine theme settings to add an right-justified menu alignment option for the cb_main_menu_alignment setting
+add_filter( 'option_tree_settings_args', function( $custom_settings ){
+	$menu_alignment_option_key = array_search( 'cb_main_menu_alignment', array_column($custom_settings['settings'], 'id') );
+	if(
+		$menu_alignment_option_key !== false && 
+		isset( $custom_settings['settings'][$menu_alignment_option_key]['choices'] )
+	) {
+		$custom_settings['settings'][$menu_alignment_option_key]['choices'][] = [
+			'value' => 'cb-menu-al-right',
+			'label' => 'Right',
+			'src' => ''
+		];
+	}
+
+
+	return $custom_settings;
+} );

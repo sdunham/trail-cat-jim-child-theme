@@ -43,6 +43,10 @@ div .select2-container{
 }
 
 /* Nav Style Tweaks */
+.cb-menu-al-right .cb-main-nav {
+	text-align: right;
+}
+
 @media only screen and (min-width: 1020px) {
 	#cb-top-menu ul li ul,
 	#cb-nav-bar .cb-links-menu .cb-sub-menu {
