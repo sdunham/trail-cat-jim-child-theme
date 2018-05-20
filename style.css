@@ -31,6 +31,7 @@ div .select2-container{
 	margin-top: 32px;
 }
 
+/* Post Teaser Style Tweaks */
 .cb-meta .cb-byline {
 	margin-bottom: 0px;
 }
@@ -41,6 +42,19 @@ div .select2-container{
 	margin-top: 0px;
 }
 
+/* Nav Style Tweaks */
+@media only screen and (min-width: 1020px) {
+	#cb-nav-bar .cb-links-menu .cb-sub-menu {
+    	width: 280px !important;
+	}
+}
+
+@media only screen and (min-width: 1020px) {
+	#cb-nav-bar .cb-links-menu .cb-sub-menu li .cb-grandchild-menu {
+		    right: -280px !important;
+			width: 280px !important;
+	}
+}
 
 
 /* LOADER */
