@@ -47,6 +47,14 @@ div .select2-container{
 	text-align: right;
 }
 
+#cb-outer-container #cb-top-menu .cb-left-side {
+	width: 75%;
+}
+
+#cb-outer-container #cb-top-menu .cb-right-side {
+	width: 25%;
+}
+
 @media only screen and (min-width: 1020px) {
 	#cb-top-menu ul li ul,
 	#cb-nav-bar .cb-links-menu .cb-sub-menu {
