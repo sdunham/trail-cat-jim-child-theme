@@ -44,12 +44,14 @@ div .select2-container{
 
 /* Nav Style Tweaks */
 @media only screen and (min-width: 1020px) {
+	#cb-top-menu ul li ul,
 	#cb-nav-bar .cb-links-menu .cb-sub-menu {
     	width: 280px !important;
 	}
 }
 
 @media only screen and (min-width: 1020px) {
+	#cb-top-menu .cb-links-menu .cb-sub-menu li .cb-grandchild-menu,
 	#cb-nav-bar .cb-links-menu .cb-sub-menu li .cb-grandchild-menu {
 		    right: -280px !important;
 			width: 280px !important;
