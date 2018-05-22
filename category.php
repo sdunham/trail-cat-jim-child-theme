@@ -88,7 +88,7 @@
             <?php the_archive_description(); ?>
             <?php
                 // Added to original template: Output a list of subcategories for the current category
-                $children = get_terms( 'category', [ 'parent' => $cb_cat_id ] );
+                $children = get_terms( 'category', [ 'parent' => $cb_cat_id, 'hide_empty' => false ] );
                 set_query_var( 'categories', $children );
                 get_template_part( 'partials/categoryList', 'simple' );
             ?>
