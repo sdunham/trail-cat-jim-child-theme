@@ -38,7 +38,7 @@ if( count( $list_categories ) > 0 ){
 				<?php echo $trimmedParentsMarkup; ?>
 			</em>
 			<?php if( $category->count > 0 ): ?>
-				(<?php echo $category->count; ?>)
+				(Reports: <?php echo $category->count; ?>)
 			<?php endif; ?>
 			<?php endif; ?>
 		</p>
