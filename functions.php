@@ -87,7 +87,8 @@ function get_archive_posts($return = false){
 
 	$posts = get_posts([
 		'posts_per_page' => -1,
-		'date_query' => $query
+		'date_query' => $query,
+		'order' => 'ASC'
 	]);
 
 	set_query_var( 'archive_posts', $posts );
