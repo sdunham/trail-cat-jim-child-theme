@@ -3,6 +3,9 @@
 if( is_admin() ){
 	require_once get_stylesheet_directory() . '/classes/PostListingPage.php';
 	$post_listing_page = new PostListingPage();
+
+	require_once get_stylesheet_directory() . '/classes/ReportsPage.php';
+	$post_listing_page = new ReportsPage();
 }
 
 // Enqueue the parsent theme styles, and child theme scripts/styles

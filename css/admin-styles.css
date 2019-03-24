@@ -1,7 +1,9 @@
-#post-list-contain table td{
+#post-list-contain table td,
+#tcj-reports-contain table td{
 	vertical-align: top;
 }
 
-#post-list-contain table tbody tr:nth-child(odd) {
+#post-list-contain table tbody tr:nth-child(odd),
+#tcj-reports-contain table tbody tr:nth-child(odd) {
    background-color: #ccc;
 }
