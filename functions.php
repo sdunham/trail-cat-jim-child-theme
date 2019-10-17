@@ -8,6 +8,14 @@ if( is_admin() ){
 	$post_listing_page = new ReportsPage();
 }
 
+require_once get_stylesheet_directory() . '/classes/TermListWidget.php';
+
+// Register term list widget
+add_action( 'widgets_init', 'tcj_register_widgets' );
+function tcj_register_widgets() {
+    register_widget( 'TrailCatJim\TermListWidget' );
+}
+
 // Enqueue the parsent theme styles, and child theme scripts/styles
 add_action( 'wp_enqueue_scripts', 'my_theme_enqueue_styles' );
 function my_theme_enqueue_styles() {
