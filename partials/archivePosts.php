@@ -3,7 +3,8 @@
 /* Used to render posts for the custom archive page, 
 based on the parent theme's "Blog Style H (Grid)" */
 
-$cb_qry = cb_get_qry();
+// TODO: Review & rework this based on new 15zine theme version
+//$cb_qry = cb_get_qry();
 $i = 1;
 $cb_ppp = 3;
            
@@ -27,7 +28,7 @@ if( count( $archive_posts ) ){
 
             <div class="cb-article-meta">
                 <h2><a href="<?php echo get_permalink( $cb_post_id ); ?>"><?php echo $cur_post->post_title; ?></a></h2>
-                <?php cb_byline( $cb_post_id ); ?>
+                <?php //cb_byline( $cb_post_id ); ?>
            </div>
 
            <a href="<?php echo get_permalink( $cb_post_id ); ?>" class="cb-link"></a>

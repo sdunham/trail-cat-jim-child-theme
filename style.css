@@ -42,6 +42,11 @@ div .select2-container{
 	margin-top: 0px;
 }
 
+/* Hide post excerpts in new theme version */
+.excerpt.body-color {
+	display: none;
+}
+
 /* Nav Style Tweaks */
 .cb-menu-al-right .cb-main-nav {
 	text-align: right;
