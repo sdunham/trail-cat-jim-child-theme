@@ -69,45 +69,29 @@ function get_published_post_months_by_year($year) {
 }
 
 // AJAX response for returning a list of months to the front end based on a given year
-add_action( 'wp_ajax_get_post_months_by_year', 'post_months_ajax_response' );
-add_action( 'wp_ajax_nopriv_get_post_months_by_year', 'post_months_ajax_response' );
-function post_months_ajax_response(){
-	$year = filter_input( INPUT_POST, 'year', FILTER_VALIDATE_INT );
-	$months = [];
-
-	if( $year ){
-		$months = get_published_post_months_by_year( $year );
-		$posts_markup = get_archive_posts( true );
-	}
-
-	wp_send_json( ['months' => $months, 'postsMarkup' => $posts_markup] );
-}
-
-// AJAX response for returning a list of months to the front end based on a given year
 add_action( 'wp_ajax_get_archive_posts', 'get_archive_posts' );
 add_action( 'wp_ajax_nopriv_get_archive_posts', 'get_archive_posts' );
 function get_archive_posts($return = false){
 	$year = filter_input( INPUT_POST, 'year', FILTER_VALIDATE_INT );
-	$month = filter_input( INPUT_POST, 'month', FILTER_VALIDATE_INT );
+	$season = filter_input( INPUT_POST, 'season', FILTER_SANITIZE_STRING );
 
-	$query = ['year' => $year];
+	$date_query = tcj_get_archive_date_query($year, $season);
 
-	if( $month ){
-		$query['month'] = $month;
+	$query = [
+		'posts_per_page' => -1,
+		'order' => 'ASC',
+	];
+
+	if ($date_query) {
+		$query['date_query'] = $date_query;
 	}
 
-	$posts = get_posts([
-		'posts_per_page' => -1,
-		'date_query' => $query,
-		'order' => 'ASC'
+	$grid = new Codetipi15zineBlockGrid([
+		// A p value of 83 corresponds to a 3 column grid
+		'p' => 83,
+		'qry' => $query,
 	]);
-
-	set_query_var( 'archive_posts', $posts );
-
-	ob_start();
-	get_template_part( 'partials/archivePosts' );
-	$posts_markup = ob_get_contents();
-	ob_end_clean();
+	$posts_markup = $grid->output(false);
 
 	if( $return ){
 		return $posts_markup;
@@ -116,8 +100,55 @@ function get_archive_posts($return = false){
 	wp_send_json( $posts_markup );
 }
 
+// Builds post query date_query array based on the provided year and season
+function tcj_get_archive_date_query($year, $season){
+	$date_query = [];
+	if (!$year && !$season) {
+		return $date_query;
+	}
+
+	if (!$season) {
+		$date_query['year'] = $year;
+	} else {
+		$months = tcj_season_to_months($season);
+		if ($months) {
+			$date_query['relation'] = 'OR';
+			foreach ($months as $month) {
+				$month_query = ['month' => $month];
+				if ($year) {
+					$month_query['year'] = $year;
+				}
+				$date_query[] = $month_query;
+			}
+		}
+	}
+
+	return $date_query;
+}
+
+// Returns an array of months for the given season name
+function tcj_season_to_months($season){
+	if (strtolower($season) === 'winter') {
+		return [12,1,2];
+	}
+
+	if (strtolower($season) === 'spring') {
+		return [3,4,5];
+	}
+
+	if (strtolower($season) === 'summer') {
+		return [6,7,8];
+	}
+
+	if (strtolower($season) === 'fall' || strtolower($season) === 'autumn') {
+		return [9,10,11];
+	}
+
+	return [];
+}
+
 function get_archive_default_text(){
-	return 'Please select a year and (optional) month to view posts';
+	return 'Please select a year and/or season to view posts';
 }
 
 // Builts an array of child categories which aren't a parent of another category
@@ -194,22 +225,3 @@ add_filter( 'codetipi_15zine_get_cats', function($useless_array_param, $pid, $ca
 
 	return $categories_list;
 }, 10, 3 );
-
-// Filter default 15zine theme settings to add an right-justified menu alignment option for the cb_main_menu_alignment setting
-// TODO: Confirm this works w/ new theme version
-add_filter( 'option_tree_settings_args', function( $custom_settings ){
-	$menu_alignment_option_key = array_search( 'cb_main_menu_alignment', array_column($custom_settings['settings'], 'id') );
-	if(
-		$menu_alignment_option_key !== false && 
-		isset( $custom_settings['settings'][$menu_alignment_option_key]['choices'] )
-	) {
-		$custom_settings['settings'][$menu_alignment_option_key]['choices'][] = [
-			'value' => 'cb-menu-al-right',
-			'label' => 'Right',
-			'src' => ''
-		];
-	}
-
-
-	return $custom_settings;
-} );

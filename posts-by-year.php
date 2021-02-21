@@ -4,6 +4,7 @@ get_header();
 $args = codetipi_15zine_get_hero_design( $post->ID, true );
 $layout = codetipi_15zine_get_article_layout( $post->ID, $args );
 $post_wrap_class = codetipi_15zine_post_wrap_class( $post->ID, $args );
+$has_sidebar = codetipi_15zine_sidebar_checker();
 ?>
 <div id="cb-content" class="content-area clearfix">
 	<div <?php post_class( $post_wrap_class ); ?>>
@@ -29,15 +30,21 @@ $post_wrap_class = codetipi_15zine_post_wrap_class( $post->ID, $args );
 					</div>
 
 					<div class="postArchiveSelectContain cb-col-4">
-						<label for="postMonthSelect">Month</label>
-						<select style="width: 100%" name="postMonth" id="postMonthSelect" class="select2 postArchiveSelect"></select>
+						<label for="postSeasonSelect">Season</label>
+						<select style="width: 100%" name="postSeason" id="postSeasonSelect" class="select2 postArchiveSelect">
+							<option value="">Select a season</option>
+							<option value="winter">Winter</option>
+							<option value="spring">Spring</option>
+							<option value="summer">Summer</option>
+							<option value="fall">Fall</option>
+						</select>
 					</div>
 
-					<section id="postArchiveLoading" class="cb-hidden cb-col-12">
+					<section id="postArchiveLoading" class="cb-hidden cb-col-<?php echo $has_sidebar ? 8 : 12 ?>">
 						<div class="lds-dual-ring"></div>
 					</section>
 
-					<section class="cb-col-12" id="postArchivePostsContain">
+					<section class="cb-col-<?php echo $has_sidebar ? 8 : 12 ?>" id="postArchivePostsContain">
 						<em><?php echo get_archive_default_text(); ?></em>
 					</section>
 					<?php
