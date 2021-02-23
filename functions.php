@@ -79,7 +79,7 @@ function get_archive_posts($return = false){
 
 	$query = [
 		'posts_per_page' => -1,
-		'order' => 'ASC',
+		'order' => 'DESC',
 	];
 
 	if ($date_query) {
