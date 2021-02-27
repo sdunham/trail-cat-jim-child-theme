@@ -35,11 +35,25 @@ codetipi_15zine_feature_block( array(
 			$children = get_terms( 'category', [ 'parent' => $tid, 'hide_empty' => false ] );
 			set_query_var( 'categories', $children );
 			get_template_part( 'partials/categoryList', 'simple' );
-			// END CUSTOMIZATION
+
+			// Get block output to check if there are any posts to display
+			ob_start();
 			codetipi_15zine_main_layout( array(
 				'p' => $p,
 				'feature_block' => $featured,
 			) );
+			$posts_markup = ob_get_contents();
+			ob_end_clean();
+
+			// Output custom markup if term has no posts and is a category
+			//$term = get_term($tid);
+			if (!$posts_markup && is_category()) {
+				get_template_part( 'partials/category', 'noPosts' );
+			} else {
+				echo $posts_markup;
+			}
+
+			// END CUSTOMIZATION
 			?>
 		</div>
         <?php // START CUSTOMIZATION ?>
