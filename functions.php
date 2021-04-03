@@ -225,3 +225,25 @@ add_filter( 'codetipi_15zine_get_cats', function($useless_array_param, $pid, $ca
 
 	return $categories_list;
 }, 10, 3 );
+
+// Override page content for the interactive map page template
+add_filter( 'codetipi_15zine_the_content_override', function() {
+	if (is_page_template('interactive-map-page.php')) {
+		return true;
+	}
+
+	return false;
+} );
+
+add_filter( 'codetipi_15zine_the_content', function() {
+	if (is_page_template('interactive-map-page.php')) {
+		get_template_part('partials/page', 'interactiveMap');
+	}
+} );
+
+// Load custom CSS for the interactive map page
+add_action( 'wp_enqueue_scripts', function () {
+	if (is_page_template('interactive-map-page.php')) {
+		wp_enqueue_style( 'tcj-interactive-map', get_stylesheet_directory_uri() . '/css/major-peaks-interactive-map_style.css' );
+	}
+} );

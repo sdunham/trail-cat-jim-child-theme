@@ -46,7 +46,6 @@ codetipi_15zine_feature_block( array(
 			ob_end_clean();
 
 			// Output custom markup if term has no posts and is a category
-			//$term = get_term($tid);
 			if (!$posts_markup && is_category()) {
 				get_template_part( 'partials/category', 'noPosts' );
 			} else {
